@@ -30,6 +30,14 @@ ${!imgFileUrl ? `<div class="upload=image">
   `;
 
     appEl.innerHTML = appHtml;
+    renderHeaderComponent({
+      element: document.querySelector(".header-container"),
+    });
+    !imgFileUrl ? undefined : document.querySelector('.file-upload-remove-button').addEventListener('click', () => {
+      imgFileUrl = null;
+      render();
+      initFileInputElement();
+    })
     document.getElementById("add-button").addEventListener("click", () => {
       onAddPostClick({
         description: document.querySelector('.textarea').value,
@@ -37,17 +45,18 @@ ${!imgFileUrl ? `<div class="upload=image">
       });
       imgFileUrl = null;
     });
+
   };
   render();
-  const fileInputElement = document.querySelector('.file-upload-input');
-  fileInputElement.addEventListener('input', () => {
-    uploadImage({ file: fileInputElement.files[0] })
-      .then((response) => {
-        imgFileUrl = response.fileUrl;
-        render();
-      })
-  });
-  renderHeaderComponent({
-    element: document.querySelector(".header-container"),
-  });
+  initFileInputElement();
+  function initFileInputElement() {
+    const fileInputElement = document.querySelector('.file-upload-input');
+    fileInputElement.addEventListener('input', () => {
+      uploadImage({ file: fileInputElement.files[0] })
+        .then((response) => {
+          imgFileUrl = response.fileUrl;
+          render();
+        })
+    });
+  }
 }
