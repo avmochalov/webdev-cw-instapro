@@ -20,7 +20,10 @@ export function renderPostsPageComponent({ appEl }) {
       ${post.isLiked ? '<img src="./assets/images/like-active.svg"></img>' : '<img src="./assets/images/like-not-active.svg"></img>'} 
     </button>
     <p class="post-likes-text">
-      Нравится: <strong>${post.likes.length}</strong> 
+    ${post.likes.length < 1 ?
+      `Нравится: <strong> ${post.likes.length}</strong>` : post.likes.length === 1 ?
+      `Нравится: <strong> ${post.likes[0].name} </strong>` :
+      `Нравится: <strong> ${post.likes[Math.floor(Math.random() * ((post.likes.length - 1) - 0 + 1)) + 0].name} и еще ${post.likes.length - 1}</strong>`}
     </p>
   </div>
   <p class="post-text">
