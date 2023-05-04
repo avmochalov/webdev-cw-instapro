@@ -21,7 +21,7 @@ export function renderUserPostsPageComponent({ appEl }) {
       <img class="post-image" src=${post.imageUrl} >
     </div>
     <div class="post-likes">
-      <button data-post-id=${post.id} data-post-like=${post.isLiked} class="like-button">
+      <button data-post-id=${post.id} data-post-like=${post.isLiked} data-user-id=${post.user.id} class="like-button">
       ${post.isLiked ? '<img src="./assets/images/like-active.svg"></img>' : '<img src="./assets/images/like-not-active.svg"></img>'} 
       </button>
       <p class="post-likes-text">
@@ -36,7 +36,7 @@ export function renderUserPostsPageComponent({ appEl }) {
       ${post.description}
     </p>
     <p class="post-date">
-    ${formatDistanceToNow(new Date(post.createdAt), {locale: ru})} назад
+    ${formatDistanceToNow(new Date(post.createdAt), { locale: ru })} назад
     </p>
   </li>`
   })
@@ -60,10 +60,14 @@ export function renderUserPostsPageComponent({ appEl }) {
       console.log(likeEl.dataset.postLike);
       if (likeEl.dataset.postLike === 'false') {
         addLike({ postID: likeEl.dataset.postId, token: `Bearer ${user.token}` })
-          .then(() => goToPage(undefined, 'userPageLike'))
+          .then(() => goToPage('userPageLike', {
+            userId: likeEl.dataset.userId,
+          }))
       } else {
         removeLike({ postID: likeEl.dataset.postId, token: `Bearer ${user.token}` })
-          .then(() => goToPage(undefined, 'userPageLike'))
+          .then(() => goToPage('userPageLike', {
+            userId: likeEl.dataset.userId,
+          }))
       }
 
     })

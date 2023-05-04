@@ -50,7 +50,7 @@ export const goToPage = (newPage, data) => {
       });
   }
 
-  if (data === 'userPageLike') {
+  if ( newPage === 'userPageLike') {
     const userID = data.userId;
     return getUserPosts({ userID, token: getToken() })
       .then((newPosts) => {
