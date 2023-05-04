@@ -11,7 +11,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
         <h3 class="form-title">Добавить пост</h3>
           <div class="form-inputs">
               <div class="upload-image-container">
-${!imgFileUrl ? `<div class="upload=image">
+${!imgFileUrl ? `<div class="upload_image">
                 <label class="file-upload-label secondary-button">
                   <input type="file" class="file-upload-input" style="display:none">
                       Выберите фото

@@ -7,8 +7,13 @@ export function renderUserPostsPageComponent({ appEl }) {
   const postsSet = posts.map((post, index) => {
     return `<li class="post">
     <div class="post-header" data-user-id=${post.user.id}>
-        <img src=${post.user.imageUrl} class="post-header__user-image">
-        <p class="post-header__user-name">${post.user.name}</p>
+          <div class="logo__name">
+              <img src=${post.user.imageUrl} class="post-header__user-image">
+              <p class="post-header__user-name">${post.user.name}</p>
+          </div>
+              ${user ? `<button data-post-id=${post.id} class="remove-button">
+              <img src="./assets/images/remove_basket.svg"></img> 
+              </button>` : ''}
     </div>
     <div class="post-image-container">
       <img class="post-image" src=${post.imageUrl} >
@@ -57,6 +62,20 @@ export function renderUserPostsPageComponent({ appEl }) {
       } else {
         removeLike({ postID: likeEl.dataset.postId, token: `Bearer ${user.token}` })
           .then(() => goToPage(undefined, 'like'))
+      }
+
+    })
+  }
+
+  for (let removeButton of document.querySelectorAll('.remove-button')) {
+    removeButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      if (confirm('Вы уверены?')) {
+        removePost({ postID: removeButton.dataset.postId, token: `Bearer ${user.token}` })
+          .then(() => goToPage(undefined, 'like'))
+          .catch((error) => alert('Что то пошло не так!'));
+      } else {
+        return;
       }
 
     })

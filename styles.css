@@ -38,6 +38,15 @@
   text-align: right;
 }
 
+.remove-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.file-upload-remove-button {
+  width: 100%;
+}
 .posts {
   display: flex;
   flex-direction: column;
@@ -46,11 +55,17 @@
   margin: 0;
 }
 
+.logo__name {
+  display: flex;
+  align-items: center;
+}
+
 .post-header {
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-bottom: 10px;
+  justify-content: space-between;
   cursor: pointer;
 }
 
@@ -181,15 +196,25 @@
   align-items: center;
 }
 
+.upload-image-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .file-upload-image {
-  width: 100px;
-  height: 100px;
+  width: 300px;
+  height: 300px;
   object-fit: cover;
   margin-right: 10px;
   border: 1px solid gray;
   border-radius: 5px;
+  margin-bottom: 20px;
 }
 
+.upload_image {
+width: 100%;
+}
 .file-upload-label {
   display: inline-block;
   box-sizing: border-box;

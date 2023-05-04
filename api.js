@@ -121,6 +121,20 @@ export function removeLike({ postID, token }) {
   });
 }
 
+export function removePost({ postID, token }) {
+  return fetch(postsHost + `/${postID}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.status === 400) {
+      throw new Error("Что то пошло не так");
+    }
+    return response.json();
+  });
+}
+
 // Загружает картинку в облако, возвращает url загруженной картинки
 export function uploadImage({ file }) {
   const data = new FormData();
