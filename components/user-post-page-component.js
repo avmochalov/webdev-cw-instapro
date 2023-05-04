@@ -1,6 +1,8 @@
-import { removeLike, addLike,removePost } from "../api.js";
+import { removeLike, addLike, removePost } from "../api.js";
 import { posts, goToPage, user } from "../index.js";
 import { renderHeaderComponent } from "./header-component.js";
+import { formatDistanceToNow } from "date-fns/";
+import { ru } from "date-fns/locale/";
 export function renderUserPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
@@ -34,7 +36,7 @@ export function renderUserPostsPageComponent({ appEl }) {
       ${post.description}
     </p>
     <p class="post-date">
-      19 минут назад
+    ${formatDistanceToNow(new Date(post.createdAt), {locale: ru})} назад
     </p>
   </li>`
   })
@@ -58,10 +60,10 @@ export function renderUserPostsPageComponent({ appEl }) {
       console.log(likeEl.dataset.postLike);
       if (likeEl.dataset.postLike === 'false') {
         addLike({ postID: likeEl.dataset.postId, token: `Bearer ${user.token}` })
-          .then(() => goToPage(undefined, 'like'))
+          .then(() => goToPage(undefined, 'userPageLike'))
       } else {
         removeLike({ postID: likeEl.dataset.postId, token: `Bearer ${user.token}` })
-          .then(() => goToPage(undefined, 'like'))
+          .then(() => goToPage(undefined, 'userPageLike'))
       }
 
     })

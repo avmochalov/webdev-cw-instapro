@@ -49,6 +49,20 @@ export const goToPage = (newPage, data) => {
         goToPage(POSTS_PAGE);
       });
   }
+
+  if (data === 'userPageLike') {
+    const userID = data.userId;
+    return getUserPosts({ userID, token: getToken() })
+      .then((newPosts) => {
+        page = USER_POSTS_PAGE;
+        posts = newPosts;
+        renderApp();
+      })
+      .catch((error) => {
+        console.error(error);
+        goToPage(USER_POSTS_PAGE);
+      });
+  }
   if (
     [
       POSTS_PAGE,
