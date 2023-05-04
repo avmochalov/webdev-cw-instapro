@@ -1,4 +1,4 @@
-import { removeLike } from "../api.js";
+import { removeLike, addLike,removePost } from "../api.js";
 import { posts, goToPage, user } from "../index.js";
 import { renderHeaderComponent } from "./header-component.js";
 export function renderUserPostsPageComponent({ appEl }) {
