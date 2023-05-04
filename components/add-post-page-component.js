@@ -1,6 +1,5 @@
 import { renderHeaderComponent } from "./header-component.js";
 import { uploadImage } from "../api.js";
-import { getToken } from "../index.js";
 let imgFileUrl = null;
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   const render = () => {
