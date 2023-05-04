@@ -1,10 +1,11 @@
-import { posts, goToPage } from "../index.js";
+import { removeLike } from "../api.js";
+import { posts, goToPage, user } from "../index.js";
 import { renderHeaderComponent } from "./header-component.js";
 export function renderUserPostsPageComponent({ appEl }) {
-    // TODO: реализовать рендер постов из api
-    console.log("Актуальный список постов:", posts);
-    const postsSet = posts.map((post, index) => {
-      return `<li class="post">
+  // TODO: реализовать рендер постов из api
+  console.log("Актуальный список постов:", posts);
+  const postsSet = posts.map((post, index) => {
+    return `<li class="post">
     <div class="post-header" data-user-id=${post.user.id}>
         <img src=${post.user.imageUrl} class="post-header__user-image">
         <p class="post-header__user-name">${post.user.name}</p>
@@ -13,8 +14,8 @@ export function renderUserPostsPageComponent({ appEl }) {
       <img class="post-image" src=${post.imageUrl} >
     </div>
     <div class="post-likes">
-      <button data-post-id=${post.id} class="like-button">
-        <img src="./assets/images/like-active.svg">
+      <button data-post-id=${post.id} data-post-like=${post.isLiked} class="like-button">
+      ${post.isLiked ? '<img src="./assets/images/like-active.svg"></img>' : '<img src="./assets/images/like-not-active.svg"></img>'} 
       </button>
       <p class="post-likes-text">
         Нравится: <strong>${post.likes.length}</strong> 
@@ -28,19 +29,33 @@ export function renderUserPostsPageComponent({ appEl }) {
       19 минут назад
     </p>
   </li>`
-    })
-  
-    const appHtml = `
+  })
+
+  const appHtml = `
     <div class="page-container">
       <div class="header-container"></div>
       <ul class="posts">
         ${postsSet}
       </ul>
     </div>`;
-  
-    appEl.innerHTML = appHtml;
-  
-    renderHeaderComponent({
-      element: document.querySelector(".header-container"),
-    });
+
+  appEl.innerHTML = appHtml;
+
+  renderHeaderComponent({
+    element: document.querySelector(".header-container"),
+  });
+
+  for (let likeEl of document.querySelectorAll(".like-button")) {
+    likeEl.addEventListener('click', () => {
+      console.log(likeEl.dataset.postLike);
+      if (likeEl.dataset.postLike === 'false') {
+        addLike({ postID: likeEl.dataset.postId, token: `Bearer ${user.token}` })
+          .then(() => goToPage(undefined, 'like'))
+      } else {
+        removeLike({ postID: likeEl.dataset.postId, token: `Bearer ${user.token}` })
+          .then(() => goToPage(undefined, 'like'))
+      }
+
+    })
   }
+}

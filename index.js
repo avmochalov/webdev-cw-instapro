@@ -36,6 +36,19 @@ export const logout = () => {
  * Включает страницу приложения
  */
 export const goToPage = (newPage, data) => {
+  if (data === 'like') {
+
+    return getPosts({ token: getToken() })
+      .then((newPosts) => {
+        page = POSTS_PAGE;
+        posts = newPosts;
+        renderApp();
+      })
+      .catch((error) => {
+        console.error(error);
+        goToPage(POSTS_PAGE);
+      });
+  }
   if (
     [
       POSTS_PAGE,
@@ -73,7 +86,7 @@ export const goToPage = (newPage, data) => {
       // TODO: реализовать получение постов юзера из API
       console.log("Открываю страницу пользователя: ", data.userId);
       const userID = data.userId;
-      return getUserPosts({ userID })
+      return getUserPosts({ userID, token: getToken() })
         .then((newPosts) => {
           page = USER_POSTS_PAGE;
           posts = newPosts;
@@ -122,7 +135,8 @@ const renderApp = () => {
     return renderAddPostPageComponent({
       appEl,
       onAddPostClick({ description, imageUrl }) {
-        addPost({ description, imageUrl, token: getToken() }).then(() => goToPage(POSTS_PAGE));
+        addPost({ description, imageUrl, token: getToken() })
+          .then(() => goToPage(POSTS_PAGE));
         console.log("Добавляю пост...", { description, imageUrl });
       },
     });

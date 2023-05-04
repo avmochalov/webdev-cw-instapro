@@ -1,6 +1,7 @@
-import { USER_POSTS_PAGE } from "../routes.js";
+import { USER_POSTS_PAGE, POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage, user } from "../index.js";
+import { addLike, removeLike } from "../api.js";
 
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
@@ -15,8 +16,8 @@ export function renderPostsPageComponent({ appEl }) {
     <img class="post-image" src=${post.imageUrl} >
   </div>
   <div class="post-likes">
-    <button data-post-id=${post.id} class="like-button">
-      <img src="./assets/images/like-active.svg">
+    <button data-post-id=${post.id} data-post-like=${post.isLiked} class="like-button">
+      ${post.isLiked ? '<img src="./assets/images/like-active.svg"></img>' : '<img src="./assets/images/like-not-active.svg"></img>'} 
     </button>
     <p class="post-likes-text">
       Нравится: <strong>${post.likes.length}</strong> 
@@ -56,5 +57,19 @@ export function renderPostsPageComponent({ appEl }) {
         userId: userEl.dataset.userId,
       });
     });
+  }
+
+  for (let likeEl of document.querySelectorAll(".like-button")) {
+    likeEl.addEventListener('click', () => {
+      console.log(likeEl.dataset.postLike);
+      if (likeEl.dataset.postLike === 'false') {
+        addLike({ postID: likeEl.dataset.postId, token: `Bearer ${user.token}` })
+          .then(() => goToPage(undefined, 'like'))
+      } else {
+        removeLike({ postID: likeEl.dataset.postId, token: `Bearer ${user.token}` })
+          .then(() => goToPage(undefined, 'like'))
+      }
+
+    })
   }
 }

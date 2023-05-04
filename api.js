@@ -23,9 +23,12 @@ export function getPosts({ token }) {
     });
 }
 
-export function getUserPosts({ userID }) {
+export function getUserPosts({ userID, token }) {
   return fetch(postsHost + `/user-posts/${userID}`, {
     method: "GET",
+    headers: {
+      Authorization: token,
+    },
   })
     .then((response) => {
       if (response.status === 401) {
@@ -79,6 +82,34 @@ export function addPost({ description, imageUrl, token }) {
       description,
       imageUrl,
     }),
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.status === 400) {
+      throw new Error("Что то пошло не так");
+    }
+    return response.json();
+  });
+}
+
+export function addLike({ postID, token }) {
+  return fetch(postsHost + `/${postID}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    if (response.status === 400) {
+      throw new Error("Что то пошло не так");
+    }
+    return response.json();
+  });
+}
+
+export function removeLike({ postID, token }) {
+  return fetch(postsHost + `/${postID}/dislike`, {
+    method: "POST",
     headers: {
       Authorization: token,
     },
