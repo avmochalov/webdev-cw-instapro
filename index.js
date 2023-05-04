@@ -79,6 +79,10 @@ export const goToPage = (newPage, data) => {
           posts = newPosts;
           renderApp();
         })
+        .catch((error) => {
+          console.error(error);
+          goToPage(USER_POSTS_PAGE);
+        });
 
     }
 
